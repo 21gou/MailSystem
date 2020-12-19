@@ -18,12 +18,12 @@ public class Message {
         this.uuid = UUID.randomUUID().toString();
     }
 
-    public Message(String usernameSender, String usernameReceiver, Date timestamp) {
+    public Message(String usernameSender, String usernameReceiver, Date timestamp, String uuid) {
         this.usernameSender = usernameSender;
         this.usernameReceiver = usernameReceiver;
 
         this.timestamp = timestamp;
-        this.uuid = UUID.randomUUID().toString();
+        this.uuid = uuid;
     }
 
     public String getUsernameSender() {
