@@ -27,6 +27,10 @@ public class Messages implements Iterable<Message> {
         }
     }
 
+    public int getNumMessages() {
+        return this.messages.size();
+    }
+
     public Stream<Message> stream() {
         return this.messages.stream();
     }
