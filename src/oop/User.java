@@ -5,7 +5,7 @@ public class User {
     private int yearBirth;
 
     // Maybe private with getCopy method?
-    public MailBox mailbox;
+    private MailBox mailbox;
 
     public User(String username, String name, int yearBirth) {
         this.username = username;
@@ -21,5 +21,21 @@ public class User {
 
         this.yearBirth = yearBirth;
         this.mailbox = mailbox;
+    }
+
+    public void getMailBox() {
+
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getYearBirth() {
+        return this.yearBirth;
     }
 }

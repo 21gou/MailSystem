@@ -25,4 +25,17 @@ public class Message {
         this.timestamp = timestamp;
         this.uuid = UUID.randomUUID().toString();
     }
+
+    public String getUsernameSender() {
+        return this.usernameSender;
+    }
+
+    public String getUsernameReceiver() {
+        return this.usernameReceiver;
+    }
+
+    public String getSubject() { return this.subject; }
+    public String getBody() {
+        return this.body;
+    }
 }
