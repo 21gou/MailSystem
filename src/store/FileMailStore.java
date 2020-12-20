@@ -36,7 +36,7 @@ public class FileMailStore implements MailStore {
                     .filter(msg -> msg.split(";")[1].equals(user.getUsername()))
                     .map(msg -> msg.split(";"))
                     .forEach(data -> messages.addMessage(
-                            new Message(data[0], data[1], Date.valueOf(data[2]), data[3]))
+                            new Message(data[0], data[1], data[2], data[3], Date.valueOf(data[4]), data[5]))
                     );
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,7 +52,7 @@ public class FileMailStore implements MailStore {
             Files.lines(Path.of(this.filename))
                     .map(line -> line.split(";"))
                     .forEach(data -> messages.addMessage(
-                            new Message(data[0], data[1], Date.valueOf(data[2]), data[3])
+                            new Message(data[0], data[1], data[2], data[3], Date.valueOf(data[4]), data[5])
                     ));
         } catch (IOException e) {
             e.printStackTrace();

@@ -10,20 +10,26 @@ public class Message {
     private String usernameSender, usernameReceiver;
     private String subject, body;
 
-    public Message(String usernameSender, String usernameReceiver) {
+    public Message(String usernameSender, String usernameReceiver, String subject, String body) {
         this.usernameSender = usernameSender;
         this.usernameReceiver = usernameReceiver;
 
         this.timestamp = new java.util.Date();
         this.uuid = UUID.randomUUID().toString();
+
+        this.subject = subject;
+        this.body = body;
     }
 
-    public Message(String usernameSender, String usernameReceiver, Date timestamp, String uuid) {
+    public Message(String usernameSender, String usernameReceiver, String subject, String body, Date timestamp, String uuid) {
         this.usernameSender = usernameSender;
         this.usernameReceiver = usernameReceiver;
 
         this.timestamp = timestamp;
         this.uuid = uuid;
+
+        this.subject = subject;
+        this.body = body;
     }
 
     public String getUsernameSender() {
