@@ -12,11 +12,15 @@ import static java.util.stream.Collectors.toCollection;
 
 public class MailSystem {
     private HashMap<String, User> accounts;
+    private HashMap<String, MailBox> mailboxes;
+
     private MailStore store;
 
     public MailSystem(MailStore store) {
         this.store = store;
+
         this.accounts = new HashMap<String, User>();
+        this.mailboxes = new HashMap<String, MailBox>();
     }
 
     /**

@@ -17,13 +17,15 @@ public interface MailStore {
     public abstract ArrayList<Message> getMailsUser(User user);
 
     /**
-     * Get all the messages from the store
+     * Get all the messages from the store, only used by MailSystem,
+     * avoid inefficient code
      * @return
      */
     public abstract ArrayList<Message> getAllMessages();
 
     /**
-     * Get number of messages avaible in the store
+     * Get number of messages avaible in the store, only used by MailSystem,
+     * avoid inefficient code
      * @return
      */
     public abstract long getNumMessages();
