@@ -1,11 +1,11 @@
 package oop;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.UUID;
 
 public class Message {
     private final String uuid;
-    private Date timestamp;
+    private Instant timestamp;
 
     private String usernameSender, usernameReceiver;
     private String subject, body;
@@ -14,14 +14,14 @@ public class Message {
         this.usernameSender = usernameSender;
         this.usernameReceiver = usernameReceiver;
 
-        this.timestamp = new java.util.Date();
+        this.timestamp = Instant.now();
         this.uuid = UUID.randomUUID().toString();
 
         this.subject = subject;
         this.body = body;
     }
 
-    public Message(String usernameSender, String usernameReceiver, String subject, String body, Date timestamp, String uuid) {
+    public Message(String usernameSender, String usernameReceiver, String subject, String body, Instant timestamp, String uuid) {
         this.usernameSender = usernameSender;
         this.usernameReceiver = usernameReceiver;
 
@@ -46,6 +46,6 @@ public class Message {
     }
 
     public String toString() {
-        return usernameSender+";"+usernameReceiver+";"+timestamp+";"+uuid+";"+subject+";"+body+"\n";
+        return usernameSender+";"+usernameReceiver+";"+timestamp.toString()+";"+uuid+";"+subject+";"+body+"\n";
     }
 }
