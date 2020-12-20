@@ -2,16 +2,15 @@ package store;
 
 import oop.MailStore;
 import oop.Message;
-import oop.Messages;
 import oop.User;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class FileMailStore implements MailStore {
     private String filename;
@@ -28,16 +27,15 @@ public class FileMailStore implements MailStore {
         }
     }
 
-    public Messages getMailsUser(User user) {
-        Messages messages = new Messages();
+    public ArrayList<Message> getMailsUser(User user) {
+        ArrayList<Message> messages = new ArrayList<Message>();
 
         try {
-            Files.lines(Path.of(this.filename))
+            messages = Files.lines(Path.of(this.filename))
                     .filter(msg -> msg.split(";")[1].equals(user.getUsername()))
                     .map(msg -> msg.split(";"))
-                    .forEach(data -> messages.addMessage(
-                            new Message(data[0], data[1], data[2], data[3], Date.valueOf(data[4]), data[5]))
-                    );
+                    .map(data -> new Message(data[0], data[1], data[2], data[3], Date.valueOf(data[4]), data[5]))
+                    .collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,15 +43,14 @@ public class FileMailStore implements MailStore {
         return messages;
     }
 
-    public Messages getAllMessages() {
-        Messages messages = new Messages();
+    public ArrayList<Message> getAllMessages() {
+        ArrayList<Message> messages = new ArrayList<Message>();
 
         try {
-            Files.lines(Path.of(this.filename))
+            messages = Files.lines(Path.of(this.filename))
                     .map(line -> line.split(";"))
-                    .forEach(data -> messages.addMessage(
-                            new Message(data[0], data[1], data[2], data[3], Date.valueOf(data[4]), data[5])
-                    ));
+                    .map(data -> new Message(data[0], data[1], data[2], data[3], Date.valueOf(data[4]), data[5]))
+                    .collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException e) {
             e.printStackTrace();
         }

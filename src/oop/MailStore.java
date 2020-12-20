@@ -1,5 +1,7 @@
 package oop;
 
+import java.util.ArrayList;
+
 public interface MailStore {
     /**
      * Send mail to the receiver user
@@ -12,13 +14,13 @@ public interface MailStore {
      * @param user
      * @return
      */
-    public abstract Messages getMailsUser(User user);
+    public abstract ArrayList<Message> getMailsUser(User user);
 
     /**
      * Get all the messages from the store
      * @return
      */
-    public abstract Messages getAllMessages();
+    public abstract ArrayList<Message> getAllMessages();
 
     /**
      * Get number of messages avaible in the store

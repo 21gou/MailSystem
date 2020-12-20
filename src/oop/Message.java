@@ -44,4 +44,8 @@ public class Message {
     public String getBody() {
         return this.body;
     }
+
+    public String toString() {
+        return usernameSender+";"+usernameReceiver+";"+timestamp+";"+uuid+";"+subject+";"+body+"\n";
+    }
 }

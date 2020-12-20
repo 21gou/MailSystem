@@ -37,7 +37,7 @@ public class MailSystem {
      *
      * @return
      */
-    public Messages getMessages() {
+    public ArrayList<Message> getMessages() {
         return store.getAllMessages();
     }
 
@@ -59,10 +59,10 @@ public class MailSystem {
      * @param predicate
      * @return
      */
-    public Messages filterMsgs(Predicate<? super Message> predicate) {
-        return new Messages(store.getAllMessages().stream()
+    public ArrayList<Message> filterMsgs(Predicate<? super Message> predicate) {
+        return store.getAllMessages().stream()
                 .filter((Predicate<? super Message>) predicate)
-                .collect(Collectors.toCollection(ArrayList::new)));
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     /**
@@ -117,17 +117,17 @@ public class MailSystem {
      * @param year
      * @return messages which meet the requirements
      */
-    public Messages getByBornYearMsgs(int year) {
+    public ArrayList<Message> getByBornYearMsgs(int year) {
         // Get usernames with year of birth < year passed by parameter
         Users users = new Users(this.getUsers().stream()
                 .filter((user) -> user.getYearBirth() < year)
                 .collect(Collectors.toCollection(ArrayList::new)));
 
         // Get messages with usernames passed present
-        Messages msgs = new Messages(this.getMessages().stream()
+        ArrayList<Message> messages = this.getMessages().stream()
                 .filter((msg) -> users.containsUsername(msg.getUsernameReceiver()))
-                .collect(Collectors.toCollection(ArrayList::new)));
+                .collect(Collectors.toCollection(ArrayList::new));
 
-        return msgs;
+        return messages;
     }
 }
