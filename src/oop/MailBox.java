@@ -1,13 +1,19 @@
 package oop;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.function.Consumer;
 
 public class MailBox implements Iterable<Message> {
-    private Messages messages;
+    private ArrayList<Message> messages;
 
     public MailBox() {
-        this.messages = new Messages();
+        this.messages = new ArrayList<Message>();
+    }
+
+    public MailBox(ArrayList<Message> messages) {
+        this.messages = messages;
     }
 
     public void updateMail() {

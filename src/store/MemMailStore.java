@@ -33,8 +33,8 @@ public class MemMailStore implements MailStore {
         return messages;
     }
 
-    public int getNumMessages() {
-        return this.store.entrySet().stream()
+    public long getNumMessages() {
+        return (long)this.store.entrySet().stream()
                 .mapToInt(user -> user.getValue().size())
                 .sum();
     }

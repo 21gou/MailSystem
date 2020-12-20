@@ -45,11 +45,10 @@ public class MailSystem {
      *
      * @return
      */
-    public Users getUsers() {
-        Users users = new Users();
-        for(String usernameKeys: accounts.keySet()) {
-            users.addUser(accounts.get(usernameKeys));
-        }
+    public ArrayList<User> getUsers() {
+        ArrayList<User> users = accounts.entrySet().stream()
+                .map(entry -> entry.getValue())
+                .collect(Collectors.toCollection(ArrayList::new));
 
         return users;
     }
@@ -69,7 +68,7 @@ public class MailSystem {
      * Get number of messages in the system
      * @return
      */
-    public int countTotalMsgs() {
+    public long countTotalMsgs() {
         return store.getNumMessages();
     }
 
@@ -78,7 +77,7 @@ public class MailSystem {
      * @return
      */
     public long getAverageUserMsgs() {
-        return (long)store.getNumMessages()/(long)accounts.size();
+        return store.getNumMessages()/(long)accounts.size();
     }
 
     /**
@@ -99,13 +98,14 @@ public class MailSystem {
      */
     public int countWordsNameMsgs(String name) {
         // Get usernames with particular name
-        Users users = new Users(this.getUsers().stream()
+        ArrayList<String> usernames = this.getUsers().stream()
                 .filter((user) -> user.getName().equals(name))
-                .collect(Collectors.toCollection(ArrayList::new)));
+                .map(user -> user.getUsername())
+                .collect(Collectors.toCollection(ArrayList::new));
 
         // Count all the words of the messages
         int count = store.getAllMessages().stream()
-                .filter((msg) -> users.containsUsername(msg.getUsernameSender()))
+                .filter((msg) -> usernames.contains(msg.getUsernameSender()))
                 .mapToInt((msg) -> msg.getBody().split("\\s+").length).sum();
 
         return count;
@@ -119,13 +119,14 @@ public class MailSystem {
      */
     public ArrayList<Message> getByBornYearMsgs(int year) {
         // Get usernames with year of birth < year passed by parameter
-        Users users = new Users(this.getUsers().stream()
+        ArrayList<String> usernames = this.getUsers().stream()
                 .filter((user) -> user.getYearBirth() < year)
-                .collect(Collectors.toCollection(ArrayList::new)));
+                .map(user -> user.getUsername())
+                .collect(Collectors.toCollection(ArrayList::new));
 
         // Get messages with usernames passed present
         ArrayList<Message> messages = this.getMessages().stream()
-                .filter((msg) -> users.containsUsername(msg.getUsernameReceiver()))
+                .filter((msg) -> usernames.contains(msg.getUsernameReceiver()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return messages;

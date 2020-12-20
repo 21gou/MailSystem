@@ -58,11 +58,11 @@ public class FileMailStore implements MailStore {
         return messages;
     }
 
-    public int getNumMessages() {
-        int numMessages = 0;
+    public long getNumMessages() {
+        long numMessages = 0;
 
         try {
-            numMessages = (int)Files.lines(Path.of(this.filename)).count();
+            numMessages = Files.lines(Path.of(this.filename)).count();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -26,5 +26,5 @@ public interface MailStore {
      * Get number of messages avaible in the store
      * @return
      */
-    public abstract int getNumMessages();
+    public abstract long getNumMessages();
 }
