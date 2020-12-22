@@ -9,24 +9,24 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MailBox implements Iterable<Message> {
-    private ArrayList<Message> messages;
+    private User user;
     private MailStore store;
 
-    public MailBox(MailStore store) {
-        this.messages = new ArrayList<Message>();
-        this.store = store;
-    }
 
-    public MailBox(ArrayList<Message> messages) {
-        this.messages = messages;
+    private ArrayList<Message> messages;
+
+    public MailBox(User user, MailStore store) {
+        this.user = user;
+        this.store = store;
+
+        this.messages = new ArrayList<Message>();
     }
 
     /**
      * Retrieve all the messages addressed to the user
-     * @param user target
      */
-    public void updateMail(User user) {
-        this.messages = this.store.getMailsUser(user);
+    public void updateMail() {
+        this.messages = this.store.getMailsUser(this.user);
     }
 
     /**
@@ -68,6 +68,15 @@ public class MailBox implements Iterable<Message> {
     }
 
     /**
+     * Set new user and update in order to get new messages
+     * @param user
+     */
+    public void setUser(User user) {
+        this.user = user;
+        this.updateMail();
+    }
+
+    /**
      * Set different storage
      * @param store
      */
@@ -77,7 +86,7 @@ public class MailBox implements Iterable<Message> {
 
     @Override
     public Iterator<Message> iterator() {
-        return null;
+        return this.messages.iterator();
     }
 
     @Override

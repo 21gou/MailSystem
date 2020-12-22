@@ -10,18 +10,26 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 
 public class MemMailStore implements MailStore {
-    private HashMap<User, ArrayList<Message>> store;
+    private HashMap<String, ArrayList<Message>> store;
 
     public MemMailStore() {
-        this.store = new HashMap<User, ArrayList<Message>>();
+        this.store = new HashMap<String, ArrayList<Message>>();
     }
 
     public void sendMail(Message msg) {
+        if(!store.containsKey(msg.getUsernameReceiver())) {
+            this.store.put(msg.getUsernameReceiver(), new ArrayList<Message>());
+        }
+
         this.store.get(msg.getUsernameReceiver()).add(msg);
     }
 
     public ArrayList<Message> getMailsUser(User user) {
-        return this.store.get(user);
+        if(store.containsKey(user.getUsername())) {
+           return this.store.get(user.getUsername());
+        } else {
+            return new ArrayList<Message>();
+        }
     }
 
     public ArrayList<Message> getAllMessages() {

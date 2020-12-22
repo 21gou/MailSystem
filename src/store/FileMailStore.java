@@ -17,6 +17,11 @@ public class FileMailStore implements MailStore {
 
     public FileMailStore() {
         this.filename = "./src/store/FileMailStore.data";
+        checkFileAvaibility();
+    }
+    public FileMailStore(String filename) {
+        this.filename = filename;
+        checkFileAvaibility();
     }
 
     public void sendMail(Message msg) {
@@ -34,9 +39,11 @@ public class FileMailStore implements MailStore {
             messages = Files.lines(Path.of(this.filename))
                     .filter(msg -> msg.split(";")[1].equals(user.getUsername()))
                     .map(msg -> msg.split(";"))
-                    .map(data -> new Message(data[0], data[1], data[2], data[3], Instant.parse(data[4]), data[5]))
+                    .map(data -> new Message(data[0], data[1], data[2], data[3],
+                            Instant.parse(data[4]), data[5]))
                     .collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException e) {
+            System.out.println("damn");
             e.printStackTrace();
         }
 
@@ -49,7 +56,8 @@ public class FileMailStore implements MailStore {
         try {
             messages = Files.lines(Path.of(this.filename))
                     .map(line -> line.split(";"))
-                    .map(data -> new Message(data[0], data[1], data[2], data[3], Instant.parse(data[4]), data[5]))
+                    .map(data -> new Message(data[0], data[1], data[2], data[3],
+                            Instant.parse(data[4]), data[5]))
                     .collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException e) {
             e.printStackTrace();
@@ -68,5 +76,15 @@ public class FileMailStore implements MailStore {
         }
 
         return numMessages;
+    }
+
+    private void checkFileAvaibility() {
+        try {
+            if (!Files.exists(Path.of(filename))) {
+                Files.createFile(Path.of(filename));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

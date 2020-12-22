@@ -1,6 +1,7 @@
 package oop;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 public class Message {
@@ -45,7 +46,32 @@ public class Message {
         return this.body;
     }
 
+    public Instant getTimestamp() {
+        return this.timestamp;
+    }
+
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(getUuid(), message.getUuid()) && Objects.equals(getTimestamp(),
+                message.getTimestamp()) && Objects.equals(getUsernameSender(),
+                message.getUsernameSender()) && Objects.equals(getUsernameReceiver(),
+                message.getUsernameReceiver()) && Objects.equals(getSubject(),
+                message.getSubject()) && Objects.equals(getBody(), message.getBody());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, timestamp, usernameSender, usernameReceiver, subject, body);
+    }
+
     public String toString() {
-        return usernameSender+";"+usernameReceiver+";"+timestamp.toString()+";"+uuid+";"+subject+";"+body+"\n";
+        return usernameSender+";"+usernameReceiver+";"+subject+";"+body+";"+timestamp.toString()+";"+uuid+"\n";
     }
 }

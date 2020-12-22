@@ -23,4 +23,13 @@ public class MailStoreFactory {
         }
     }
 
+    public static MailStore getMailStoreFactory(int storeType, String options) {
+        switch(storeType) {
+            case FILESTORE:
+                return new FileMailStore(options);
+            default:
+                return null;
+        }
+    }
+
 }

@@ -23,4 +23,14 @@ public class User {
     public int getYearBirth() {
         return this.yearBirth;
     }
+
+    public boolean equals(User user) {
+        boolean equal = true;
+
+        equal &= this.username.equals(user.getUsername());
+        equal &= this.name.equals(user.getName());
+        equal &= this.yearBirth == user.getYearBirth();
+
+        return equal;
+    }
 }

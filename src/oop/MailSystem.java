@@ -31,6 +31,7 @@ public class MailSystem {
     public boolean addUser(User user) {
         if(!accounts.containsKey(user.getUsername())) {
             accounts.put(user.getUsername(), user);
+            mailboxes.put(user.getUsername(), new MailBox(user, store));
             return true;
         } else {
             return false;
