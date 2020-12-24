@@ -71,7 +71,13 @@ public class Message {
         return Objects.hash(uuid, timestamp, usernameSender, usernameReceiver, subject, body);
     }
 
+    @Override
     public String toString() {
         return usernameSender+";"+usernameReceiver+";"+subject+";"+body+";"+timestamp.toString()+";"+uuid+"\n";
+    }
+
+    @Override
+    public Message clone() {
+        return new Message(usernameSender, usernameReceiver, subject, body, timestamp, uuid);
     }
 }

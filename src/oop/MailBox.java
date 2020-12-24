@@ -1,6 +1,8 @@
 package oop;
 
-import java.lang.reflect.Array;
+import patterns.ObservableMailBox;
+import patterns.ObserverFilter;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -8,17 +10,20 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class MailBox implements Iterable<Message> {
+public class MailBox extends ObservableMailBox implements Iterable<Message> {
     private User user;
     private MailStore store;
+    private ArrayList<ObserverFilter> filters;
 
-
+    private ArrayList<Message> spam;
     private ArrayList<Message> messages;
 
     public MailBox(User user, MailStore store) {
         this.user = user;
         this.store = store;
+        this.filters = new ArrayList<ObserverFilter>();
 
+        this.spam = new ArrayList<Message>();
         this.messages = new ArrayList<Message>();
     }
 
@@ -26,7 +31,15 @@ public class MailBox implements Iterable<Message> {
      * Retrieve all the messages addressed to the user
      */
     public void updateMail() {
-        this.messages = this.store.getMailsUser(this.user);
+        // Clean spam list for avoid repeated messages
+        spam = new ArrayList<Message>();
+
+        // Create copy in order to avoid modification of store
+        messages = store.getMailsUser(user).stream()
+                .map(msg -> msg.clone())
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        notifyObserver();
     }
 
     /**
@@ -34,7 +47,15 @@ public class MailBox implements Iterable<Message> {
      * @return mails received
      */
     public ArrayList<Message> listMail() {
-        return this.messages;
+        return messages;
+    }
+
+    /**
+     * Return all the mails from spam list
+     * @return
+     */
+    public ArrayList<Message> listSpam() {
+        return spam;
     }
 
     /**
@@ -82,6 +103,26 @@ public class MailBox implements Iterable<Message> {
      */
     public void setStore(MailStore store) {
         this.store = store;
+    }
+
+    public void attach(ObserverFilter filter) {
+        this.filters.add(filter);
+    }
+
+
+    public void detach(ObserverFilter filter) {
+        filters.remove(filter);
+    }
+
+    public void notifyObserver() {
+        for(ObserverFilter filter: filters) {
+            filter.update();
+        }
+    }
+
+    public void setMessageSpam(Message message) {
+        this.messages.remove(message);
+        this.spam.add(message);
     }
 
     @Override
