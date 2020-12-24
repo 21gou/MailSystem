@@ -1,5 +1,7 @@
 package oop;
 
+import java.util.Objects;
+
 public class User {
     private String username, name;
     private int yearBirth;
@@ -24,13 +26,18 @@ public class User {
         return this.yearBirth;
     }
 
-    public boolean equals(User user) {
-        boolean equal = true;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return yearBirth == user.getYearBirth()
+                && Objects.equals(username, user.getUsername())
+                && Objects.equals(name, user.getName());
+    }
 
-        equal &= this.username.equals(user.getUsername());
-        equal &= this.name.equals(user.getName());
-        equal &= this.yearBirth == user.getYearBirth();
-
-        return equal;
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, name, yearBirth);
     }
 }
