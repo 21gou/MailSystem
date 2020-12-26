@@ -1,18 +1,19 @@
-package patterns;
+package filters;
 
 import oop.MailBox;
 import oop.Message;
+import patterns.ObserverFilter;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class TooLongFilter extends ObserverFilter {
-    private final Predicate<Message> filterSpam = (msg) -> msg.getBody().length() > 20;
+public class SpamUserFilter extends ObserverFilter {
+    private final Predicate<Message> filterSpam = (msg) -> msg.getUsernameSender().contains("spam");
     private MailBox mailbox;
 
-    public TooLongFilter(MailBox mailbox) {
-        this.mailbox = mailbox; 
+    public SpamUserFilter(MailBox mailbox) {
+        this.mailbox = mailbox;
     }
 
     public void update() {
