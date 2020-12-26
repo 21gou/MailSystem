@@ -35,9 +35,7 @@ public class MailBox extends ObservableMailBox implements Iterable<Message> {
         spam = new ArrayList<Message>();
 
         // Create copy in order to avoid modification of store
-        messages = store.getMailsUser(user).stream()
-                .map(msg -> msg.clone())
-                .collect(Collectors.toCollection(ArrayList::new));
+        messages = store.getMailsUser(user);
 
         notifyObserver();
     }

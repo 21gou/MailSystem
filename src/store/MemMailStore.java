@@ -26,7 +26,9 @@ public class MemMailStore implements MailStore {
 
     public ArrayList<Message> getMailsUser(User user) {
         if(store.containsKey(user.getUsername())) {
-           return this.store.get(user.getUsername());
+           return this.store.get(user.getUsername()).stream()
+                   .map(msg -> msg.clone()) // Avoid modification inside store
+                   .collect(Collectors.toCollection(ArrayList::new));
         } else {
             return new ArrayList<Message>();
         }
@@ -36,6 +38,7 @@ public class MemMailStore implements MailStore {
         ArrayList<Message> messages = this.store.entrySet().stream()
                 .map(user -> user.getValue())
                 .flatMap(Collection::stream)
+                .map(msg -> msg.clone()) // Avoid modification inside store 
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return messages;
