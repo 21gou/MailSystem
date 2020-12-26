@@ -7,6 +7,7 @@ import redis.clients.jedis.Jedis;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class RedisMailStore implements MailStore {
@@ -33,11 +34,17 @@ public class RedisMailStore implements MailStore {
 
     @Override
     public ArrayList<Message> getAllMessages() {
-        return null;
+        return conn.keys("*").stream()                  // Load all keys
+                .map(key -> conn.lrange(key, 0, -1)) // Get all values from key
+                .flatMap(Collection::stream)                   // Convert to stream
+                .map(msg -> msg.split(";"))              // Split string
+                .map(data -> new Message(data[0], data[1], data[2], data[3],
+                        Instant.parse(data[4]), data[5]))       // Create new Message
+                .collect(Collectors.toCollection(ArrayList::new));  // Collect all messages
     }
 
     @Override
     public long getNumMessages() {
-        return 0;
+        return this.getAllMessages().stream().count();
     }
 }

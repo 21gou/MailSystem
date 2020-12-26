@@ -26,7 +26,7 @@ public class FileMailStore implements MailStore {
 
     public void sendMail(Message msg) {
         try {
-            Files.write(Path.of(filename), msg.toString().getBytes(), StandardOpenOption.APPEND);
+            Files.write(Path.of(filename), (msg.toString()+"\n").getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }

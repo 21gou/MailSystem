@@ -74,7 +74,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return usernameSender+";"+usernameReceiver+";"+subject+";"+body+";"+timestamp.toString()+";"+uuid+"\n";
+        return usernameSender+";"+usernameReceiver+";"+subject+";"+body+";"+timestamp.toString()+";"+uuid;
     }
 
     @Override

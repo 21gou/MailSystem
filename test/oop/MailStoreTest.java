@@ -1,6 +1,7 @@
 package oop;
 
 import org.junit.jupiter.api.*;
+import redis.clients.jedis.Jedis;
 import store.FileMailStore;
 import store.MemMailStore;
 
@@ -22,7 +23,7 @@ public class MailStoreTest {
     void setUp() {
         try {
             Files.deleteIfExists(Path.of("./test/oop/FileMailStoreTest.data"));
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -33,16 +34,28 @@ public class MailStoreTest {
         stores = new MailStore[]{
                 storeFactory.getMailStoreFactory(MailStoreFactory.INMEMORYSTORE),
                 storeFactory.getMailStoreFactory(MailStoreFactory.FILESTORE, "./test/oop/FileMailStoreTest.data"),
+                storeFactory.getMailStoreFactory(MailStoreFactory.REDISSTORE),
         };
     }
 
+    @AfterEach
+    void tearDown() {
+        try {
+            Files.deleteIfExists(Path.of("./test/oop/FileMailStoreTest.data"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        Jedis jedis = new Jedis("localhost");
+        jedis.flushAll();
+        jedis.close();
+    }
 
     void loadData() {
         Message[] messages = {
-                new Message("username 1", "name 1", "subject 1", "body 1", Instant.now(), UUID.randomUUID().toString()),
-                new Message("username 2", "name 2", "subject 2", "body 2", Instant.now(), UUID.randomUUID().toString()),
-                new Message("username 3", "name 3", "subject 3", "body 3", Instant.now(), UUID.randomUUID().toString()),
+                new Message("username 1", "username 3", "subject 1", "body 1", Instant.now(), UUID.randomUUID().toString()),
+                new Message("username 2", "username 1", "subject 2", "body 2", Instant.now(), UUID.randomUUID().toString()),
+                new Message("username 3", "username 2", "subject 3", "body 3", Instant.now(), UUID.randomUUID().toString()),
         };
 
         for(Message msg: messages) {
@@ -53,10 +66,12 @@ public class MailStoreTest {
         }
     }
 
+
+
     @Test
     void sendMail() {
         // Check if fails being the first message
-        Message newMsg = new Message("username 4", "name 4", "subject 4",
+        Message newMsg = new Message("username 4", "username 2", "subject 4",
                 "body 4", Instant.now(), UUID.randomUUID().toString());
 
         expectedMessages.add(newMsg);
@@ -72,7 +87,7 @@ public class MailStoreTest {
 
         // Load all messages and try to send another
         loadData();
-        newMsg = new Message("username 5", "name 5", "subject 5",
+        newMsg = new Message("username 5", "username 1", "subject 5",
                 "body 5", Instant.now(), UUID.randomUUID().toString());
 
         expectedMessages.add(newMsg);
