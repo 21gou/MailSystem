@@ -38,7 +38,7 @@ public class MemMailStore implements MailStore {
         ArrayList<Message> messages = this.store.entrySet().stream()
                 .map(user -> user.getValue())
                 .flatMap(Collection::stream)
-                .map(msg -> msg.clone()) // Avoid modification inside store 
+                .map(msg -> msg.clone()) // Avoid modification inside store
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return messages;

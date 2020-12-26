@@ -45,6 +45,7 @@ public class Message {
     public String getBody() {
         return this.body;
     }
+    public void setBody(String body) { this.body = body; }
 
     public Instant getTimestamp() {
         return this.timestamp;
