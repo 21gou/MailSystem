@@ -21,7 +21,7 @@ public class MailSystem {
 
     private MailStore store;
 
-    public MailSystem(MailStore store) {
+    public MailSystem() {
         loadAnotation();
 
         this.accounts = new HashMap<String, User>();
@@ -29,17 +29,19 @@ public class MailSystem {
     }
 
     /**
-     *
+     * Add user to the system and retrieves the mailbox assigned,
+     * will return null if user is already in the system
      * @param user
      * @return
      */
-    public boolean addUser(User user) {
+    public MailBox addUser(User user) {
         if(!accounts.containsKey(user.getUsername())) {
             accounts.put(user.getUsername(), user);
             mailboxes.put(user.getUsername(), new MailBox(user, store));
-            return true;
+
+            return mailboxes.get(user.getUsername());
         } else {
-            return false;
+            return null;
         }
     }
 
@@ -69,7 +71,7 @@ public class MailSystem {
      * @return
      */
     public ArrayList<Message> filterMsgs(Predicate<? super Message> predicate) {
-        return store.getAllMessages().stream()
+        return this.getMessages().stream()
                 .filter((Predicate<? super Message>) predicate)
                 .collect(Collectors.toCollection(ArrayList::new));
     }
@@ -95,7 +97,7 @@ public class MailSystem {
      * @return grouped messages
      */
     public Map<String, List<Message>> groupBySubjectMsgs() {
-        Map<String, List<Message>> messages = store.getAllMessages().stream()
+        Map<String, List<Message>> messages = this.getMessages().stream()
                 .collect(Collectors.groupingBy(Message::getSubject));
 
         return messages;
@@ -114,7 +116,7 @@ public class MailSystem {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         // Count all the words of the messages
-        int count = store.getAllMessages().stream()
+        int count = this.getMessages().stream()
                 .filter((msg) -> usernames.contains(msg.getUsernameSender()))
                 .mapToInt((msg) -> msg.getBody().split("\\s+").length).sum();
 
@@ -142,14 +144,13 @@ public class MailSystem {
         return messages;
     }
 
-    public void loadAnotation() {
+    private void loadAnotation() {
         // Get metainformation of this class
         Class meta = getClass();
 
         // Get the anotation
         Annotation anot = meta.getAnnotation(Config.class);
         Config conf = (Config) anot;
-
 
         switch(conf.store()) {
             case "store.FileMailStore":
@@ -162,11 +163,15 @@ public class MailSystem {
                 store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.REDISSTORE);
                 break;
             default:
-                System.out.println("Error");
+                System.out.println("Invalid store anotation!");
         }
 
         if (conf.log()) {
             this.store = (MailStore) DynamicProxy.newInstance(store);
         }
+    }
+
+    public void setStore(MailStore store) {
+        this.store = store;
     }
 }

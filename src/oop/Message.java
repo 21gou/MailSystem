@@ -22,7 +22,8 @@ public class Message {
         this.body = body;
     }
 
-    public Message(String usernameSender, String usernameReceiver, String subject, String body, Instant timestamp, String uuid) {
+    public Message(String usernameSender, String usernameReceiver, String subject, String body,
+                   Instant timestamp, String uuid) {
         this.usernameSender = usernameSender;
         this.usernameReceiver = usernameReceiver;
 
