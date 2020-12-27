@@ -14,6 +14,9 @@ public class MainEncodeMail {
     private static MailStore store;
 
     public static void main(String[] args) throws IOException {
+        // Delete previous files in order to avoid errors
+        deletePreviousFiles();
+
         System.out.println("LOADING FILESTORE WITH -AES- STRATEGY...");
         store = MailStoreFactory.createMailStore(MailStoreFactory.FILESTOREAES, "./src/main/StoreAES.data");
         mailbox = new MailBox(new User("username 1", "name", 1990), store);
@@ -48,18 +51,30 @@ public class MainEncodeMail {
         System.out.println("CONTENT IN FILE (-Reverse-): ");
         Files.lines(Path.of("./src/main/StoreReverse.data")).forEach(System.out::println);
 
-        System.out.println("[*] DELETING FILES CREATED...");
+        System.out.println("-----------------------------------");
+
+        System.out.println("LOADING FILESTORE WITH -AES AND REVERSE- STRATEGY...");
+        store = MailStoreFactory.createMailStore(MailStoreFactory.FILESTOREAESREVERSE, "./src/main/StoreAESReverse.data");
+        mailbox.setStore(store);
+
+        System.out.println("LOADING MESSAGES IN STORE DIRECTLY (avoid annotation injection)...");
+        loadData(store);
+
+        System.out.println("RETRIEVE MESSAGES OF username 1 MAILBOX: ");
+        mailbox.updateMail();
+        for(Message msg: mailbox) {
+            System.out.println(msg.toString());
+        }
+
+        System.out.println("CONTENT IN FILE (-AES and Reverse-): ");
+        Files.lines(Path.of("./src/main/StoreAESReverse.data")).forEach(System.out::println);
     }
 
     /**
      * Load data directly to the store in order to bypass MailSystem default annotation store
      * @param store
      */
-    private static void loadData(MailStore store) throws IOException {
-        // Delete files in order to prevent errors
-        Files.deleteIfExists(Path.of("./src/main/StoreReverse.data"));
-        Files.deleteIfExists(Path.of("./src/main/StoreAES.data"));
-
+    private static void loadData(MailStore store) {
         // Load messages
         Message[] messages = new Message[] {
                 new Message("username 1", "username 2", "Subject 1", "Body 1"),
@@ -74,6 +89,13 @@ public class MainEncodeMail {
         for(Message msg: messages) {
             store.sendMail(msg);
         }
+    }
+
+    private static void deletePreviousFiles() throws IOException {
+        // Delete files in order to prevent errors
+        Files.deleteIfExists(Path.of("./src/main/StoreAES.data"));
+        Files.deleteIfExists(Path.of("./src/main/StoreReverse.data"));
+        Files.deleteIfExists(Path.of("./src/main/StoreAESAndReverse.data"));
     }
 
 }

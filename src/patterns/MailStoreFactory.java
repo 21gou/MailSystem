@@ -14,7 +14,8 @@ public class MailStoreFactory {
     public static final int FILESTORE = 1;
     public static final int FILESTOREAES = 2;
     public static final int FILESTOREREVERSE = 3;
-    public static final int REDISSTORE = 4;
+    public static final int FILESTOREAESREVERSE = 4;
+    public static final int REDISSTORE = 5;
 
     public static MailStore createMailStore(int storeType) {
         switch(storeType) {
@@ -26,6 +27,13 @@ public class MailStoreFactory {
                 return new EncodeMailStoreDecorator(new FileMailStore(), new AESStrategy());
             case FILESTOREREVERSE:
                 return new EncodeMailStoreDecorator(new FileMailStore(), new ReverseStrategy());
+            case FILESTOREAESREVERSE:
+                // Chain AES with reverse strategy in top of MailStore
+                return new EncodeMailStoreDecorator(
+                        new EncodeMailStoreDecorator(new FileMailStore(), new AESStrategy()),
+                        new ReverseStrategy()
+                );
+
             case REDISSTORE:
                 return RedisMailStore.getRedisInstance();
             default:
@@ -41,6 +49,12 @@ public class MailStoreFactory {
                 return new EncodeMailStoreDecorator(new FileMailStore(options), new AESStrategy());
             case FILESTOREREVERSE:
                 return new EncodeMailStoreDecorator(new FileMailStore(options), new ReverseStrategy());
+            case FILESTOREAESREVERSE:
+                // Chain AES with reverse strategy in top of MailStore
+                return new EncodeMailStoreDecorator(
+                        new EncodeMailStoreDecorator(new FileMailStore(options), new AESStrategy()),
+                        new ReverseStrategy()
+                );
             default:
                 return null;
         }
