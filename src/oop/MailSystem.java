@@ -1,5 +1,9 @@
 package oop;
 
+import reflective.Config;
+import reflective.DynamicProxy;
+
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +14,7 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toCollection;
 
+@Config(store="store.MemMailStore", log=true)
 public class MailSystem {
     private HashMap<String, User> accounts;
     private HashMap<String, MailBox> mailboxes;
@@ -17,7 +22,7 @@ public class MailSystem {
     private MailStore store;
 
     public MailSystem(MailStore store) {
-        this.store = store;
+        loadAnotation();
 
         this.accounts = new HashMap<String, User>();
         this.mailboxes = new HashMap<String, MailBox>();
@@ -135,5 +140,33 @@ public class MailSystem {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return messages;
+    }
+
+    public void loadAnotation() {
+        // Get metainformation of this class
+        Class meta = getClass();
+
+        // Get the anotation
+        Annotation anot = meta.getAnnotation(Config.class);
+        Config conf = (Config) anot;
+
+
+        switch(conf.store()) {
+            case "store.FileMailStore":
+                store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.FILESTORE);
+                break;
+            case "store.MemMailStore":
+                store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.INMEMORYSTORE);
+                break;
+            case "store.RedisMailStore":
+                store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.REDISSTORE);
+                break;
+            default:
+                System.out.println("Error");
+        }
+
+        if (conf.log()) {
+            this.store = (MailStore) DynamicProxy.newInstance(store);
+        }
     }
 }
