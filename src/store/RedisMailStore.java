@@ -11,11 +11,23 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 public class RedisMailStore implements MailStore {
+    private static RedisMailStore instance;
     private Jedis conn;
 
-    public RedisMailStore() {
+    private RedisMailStore() {
+
         conn = new Jedis("localhost");
     }
+
+    public static RedisMailStore getRedisInstance() {
+        if(instance == null) {
+            instance = new RedisMailStore();
+        }
+
+        return instance;
+    }
+
+
 
     @Override
     public void sendMail(Message msg) {

@@ -17,7 +17,7 @@ public class MailStoreFactory {
             case FILESTORE:
                 return new FileMailStore();
             case REDISSTORE:
-                return new RedisMailStore();
+                return RedisMailStore.getRedisInstance();
             default:
                 return null;
         }
