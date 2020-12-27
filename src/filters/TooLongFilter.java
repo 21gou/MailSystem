@@ -5,6 +5,7 @@ import oop.Message;
 import patterns.ObserverFilter;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -22,5 +23,18 @@ public class TooLongFilter extends ObserverFilter {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         spamDetected.forEach(msg -> this.mailbox.setMessageSpam(msg));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TooLongFilter that = (TooLongFilter) o;
+        return Objects.equals(filterSpam, that.filterSpam) && Objects.equals(mailbox, that.mailbox);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filterSpam, mailbox);
     }
 }

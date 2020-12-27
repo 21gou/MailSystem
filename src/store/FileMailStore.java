@@ -43,7 +43,6 @@ public class FileMailStore implements MailStore {
                             Instant.parse(data[4]), data[5]))
                     .collect(Collectors.toCollection(ArrayList::new));
         } catch (IOException e) {
-            System.out.println("damn");
             e.printStackTrace();
         }
 
