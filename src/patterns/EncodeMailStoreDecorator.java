@@ -26,7 +26,17 @@ public class EncodeMailStoreDecorator extends MailStoreDecorator {
 
     @Override
     public ArrayList<Message> getMailsUser(User user) {
-        return  super.getMailsUser(user).stream()
+        return super.getMailsUser(user).stream()
+                .map(msg -> {
+                    msg.setBody(cipher.decode(msg.getBody()));
+                    return msg;
+                })
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public ArrayList<Message> getAllMessages() {
+        return super.getAllMessages().stream()
                 .map(msg -> {
                     msg.setBody(cipher.decode(msg.getBody()));
                     return msg;

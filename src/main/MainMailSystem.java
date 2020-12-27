@@ -1,10 +1,10 @@
 package main;
 
 import oop.*;
+import patterns.MailStoreFactory;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class MainMailSystem {
     private static MailSystem system;
@@ -144,6 +144,6 @@ public class MainMailSystem {
         }
 
         // 16. Now change the mail store to the file implementation.
-        system.setStore(MailStoreFactory.getMailStoreFactory(MailStoreFactory.FILESTORE));
+        system.setStore(MailStoreFactory.createMailStore(MailStoreFactory.FILESTORE));
     }
 }

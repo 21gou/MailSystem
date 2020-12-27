@@ -1,5 +1,6 @@
 package oop;
 
+import patterns.MailStoreFactory;
 import reflective.Config;
 import reflective.DynamicProxy;
 
@@ -10,9 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toCollection;
 
 @Config(store="store.MemMailStore", log=true)
 public class MailSystem {
@@ -154,13 +152,13 @@ public class MailSystem {
 
         switch(conf.store()) {
             case "store.FileMailStore":
-                store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.FILESTORE);
+                store = MailStoreFactory.createMailStore(MailStoreFactory.FILESTORE);
                 break;
             case "store.MemMailStore":
-                store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.INMEMORYSTORE);
+                store = MailStoreFactory.createMailStore(MailStoreFactory.INMEMORYSTORE);
                 break;
             case "store.RedisMailStore":
-                store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.REDISSTORE);
+                store = MailStoreFactory.createMailStore(MailStoreFactory.REDISSTORE);
                 break;
             default:
                 System.out.println("Invalid store anotation!");
