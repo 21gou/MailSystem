@@ -1,17 +1,13 @@
 package oop;
 
 import org.junit.jupiter.api.*;
+import patterns.MailStoreFactory;
 import redis.clients.jedis.Jedis;
-import store.FileMailStore;
-import store.MemMailStore;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,9 +28,9 @@ public class MailStoreTest {
         MailStoreFactory storeFactory = new MailStoreFactory();
 
         stores = new MailStore[]{
-                storeFactory.getMailStoreFactory(MailStoreFactory.INMEMORYSTORE),
-                storeFactory.getMailStoreFactory(MailStoreFactory.FILESTORE, "./test/oop/FileMailStoreTest.data"),
-                storeFactory.getMailStoreFactory(MailStoreFactory.REDISSTORE),
+                storeFactory.createMailStore(MailStoreFactory.INMEMORYSTORE),
+                storeFactory.createMailStore(MailStoreFactory.FILESTORE, "./test/oop/FileMailStoreTest.data"),
+                storeFactory.createMailStore(MailStoreFactory.REDISSTORE),
         };
     }
 

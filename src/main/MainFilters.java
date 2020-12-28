@@ -8,6 +8,8 @@ import oop.Message;
 import oop.User;
 import patterns.MailStoreFactory;
 
+import java.util.stream.Collectors;
+
 public class MainFilters {
     private static MailBox mailbox;
     private static MailStore store;
@@ -43,7 +45,7 @@ public class MainFilters {
         mailbox.attach(new TooLongFilter(mailbox));
         mailbox.updateMail();
 
-        System.out.println("MAILBOX WITH TooLongFilter:");
+        System.out.println("MAILBOX WITH TooLongFilter AND SpamUserFilter:");
         for(Message msg: mailbox) {
             System.out.println(msg.toString());
         }
@@ -52,6 +54,12 @@ public class MainFilters {
         for(Message msg: mailbox.listSpam()) {
             System.out.println(msg.toString());
         }
+
+        System.out.println("USERS THAT SENDED MESSAGES FILTERED:");
+        mailbox.listSpam().stream()
+                .map(msg -> msg.getUsernameSender())
+                .collect(Collectors.toSet())
+                .forEach(System.out::println);
 
         System.out.println("DETTACH ALL THE FILTERS AND LIST MAIL:");
         mailbox.detach(new SpamUserFilter(mailbox));

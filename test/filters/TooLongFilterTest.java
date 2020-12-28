@@ -1,10 +1,10 @@
 package filters;
 
-import filters.TooLongFilter;
 import oop.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import patterns.MailStoreFactory;
 import patterns.ObserverFilter;
 
 import java.time.Instant;
@@ -21,7 +21,7 @@ public class TooLongFilterTest {
 
     @BeforeEach
     void setUp() {
-        store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.INMEMORYSTORE);
+        store = MailStoreFactory.createMailStore(MailStoreFactory.INMEMORYSTORE);
         tmpUser = new User("username 1", "name", 1990);
         mailbox = new MailBox(tmpUser, store);
 

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import patterns.MailStoreFactory;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class MailBoxTest {
 
     @BeforeEach
     void setUp() {
-        store = MailStoreFactory.getMailStoreFactory(MailStoreFactory.INMEMORYSTORE);
+        store = MailStoreFactory.createMailStore(MailStoreFactory.INMEMORYSTORE);
         expectedMessages = new ArrayList<Message>();
     }
 
