@@ -44,6 +44,19 @@ public class MailSystem {
     }
 
     /**
+     * Return mailbox of user providing the username by parameter
+     * @param username
+     * @return
+     */
+    public MailBox logIn(String username) {
+        if(mailboxes.containsKey(username)) {
+            return mailboxes.get(username);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      *
      * @return
      */
