@@ -9,6 +9,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Moves to spam messages with more than 20 characters in body message
+ */
 public class TooLongFilter extends ObserverFilter {
     private final Predicate<Message> filterSpam = (msg) -> msg.getBody().length() > 20;
     private MailBox mailbox;

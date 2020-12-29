@@ -1,5 +1,8 @@
 package patterns;
 
+/**
+ * Encode message by reversing the body
+ */
 public class ReverseStrategy implements EncodeStrategy {
     @Override
     public String decode(String body) {

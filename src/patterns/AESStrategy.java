@@ -3,6 +3,9 @@ package patterns;
 import javax.crypto.Cipher;
 import java.util.Base64;
 
+/**
+ * Encrypts message body with AES algorithm
+ */
 public class AESStrategy implements EncodeStrategy {
     private final String key = "IWantToPassTAP12";
 

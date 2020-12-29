@@ -12,6 +12,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * MailStore based on file storage
+ */
 public class FileMailStore implements MailStore {
     private String filename;
 
@@ -24,6 +27,7 @@ public class FileMailStore implements MailStore {
         checkFileAvaibility();
     }
 
+    @Override
     public void sendMail(Message msg) {
         try {
             Files.write(Path.of(filename), (msg.toString()+"\n").getBytes(), StandardOpenOption.APPEND);
@@ -32,6 +36,7 @@ public class FileMailStore implements MailStore {
         }
     }
 
+    @Override
     public ArrayList<Message> getMailsUser(User user) {
         ArrayList<Message> messages = new ArrayList<Message>();
 
@@ -49,6 +54,7 @@ public class FileMailStore implements MailStore {
         return messages;
     }
 
+    @Override
     public ArrayList<Message> getAllMessages() {
         ArrayList<Message> messages = new ArrayList<Message>();
 
@@ -65,6 +71,7 @@ public class FileMailStore implements MailStore {
         return messages;
     }
 
+    @Override
     public long getNumMessages() {
         long numMessages = 0;
 

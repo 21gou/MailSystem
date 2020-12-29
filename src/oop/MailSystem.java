@@ -64,7 +64,7 @@ public class MailSystem {
     }
 
     /**
-     *
+     * Get all the users that had signed up in the system
      * @return
      */
     public ArrayList<User> getUsers() {
@@ -76,7 +76,7 @@ public class MailSystem {
     }
 
     /**
-     *
+     * Returns certain messages filtered by the predicate passed by parameter
      * @param predicate
      * @return
      */
@@ -154,6 +154,18 @@ public class MailSystem {
         return messages;
     }
 
+    /**
+     * Set new mail store
+     * @param store
+     */
+    public void setStore(MailStore store) {
+        this.store = store;
+    }
+
+    /**
+     * Loads annotations and create new mailstore based on store() string, add
+     * a dynamic proxy in case that log anotation is true
+     */
     private void loadAnotation() {
         // Get metainformation of this class
         Class meta = getClass();
@@ -175,7 +187,4 @@ public class MailSystem {
         }
     }
 
-    public void setStore(MailStore store) {
-        this.store = store;
-    }
 }

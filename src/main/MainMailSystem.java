@@ -6,6 +6,9 @@ import patterns.MailStoreFactory;
 import java.util.*;
 import java.util.function.Predicate;
 
+/**
+ * Main of the MailSystem administrator, contains the basic operations of the class
+ */
 public class MainMailSystem {
     private static MailSystem system;
 

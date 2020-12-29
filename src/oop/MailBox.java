@@ -103,21 +103,35 @@ public class MailBox extends ObservableMailBox implements Iterable<Message> {
         this.store = store;
     }
 
+    /**
+     * Add filter observer in order to check spam in the mailbox
+     * @param filter
+     */
     public void attach(ObserverFilter filter) {
         this.filters.add(filter);
     }
 
-
+    /**
+     * Removes filter observer
+     * @param filter
+     */
     public void detach(ObserverFilter filter) {
         filters.remove(filter);
     }
 
+    /**
+     * Notify observers, called in updateMail()
+     */
     public void notifyObserver() {
         for(ObserverFilter filter: filters) {
             filter.update();
         }
     }
 
+    /**
+     * Operation used by observers for move message to spam
+     * @param message
+     */
     public void setMessageSpam(Message message) {
         this.messages.remove(message);
         this.spam.add(message);

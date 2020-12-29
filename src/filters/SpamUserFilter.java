@@ -9,6 +9,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Moves to spam messages whos sender contains the word "spam" as username
+ */
 public class SpamUserFilter extends ObserverFilter {
     private final Predicate<Message> filterSpam = (msg) -> msg.getUsernameSender().contains("spam");
     private MailBox mailbox;

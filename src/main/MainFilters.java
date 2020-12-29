@@ -10,6 +10,9 @@ import patterns.MailStoreFactory;
 
 import java.util.stream.Collectors;
 
+/**
+ * Demonstrates filters in action
+ */
 public class MainFilters {
     private static MailBox mailbox;
     private static MailStore store;

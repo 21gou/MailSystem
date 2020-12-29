@@ -9,6 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
+/**
+ * Example of the Decorated MailStore that contains AES and Reverse strategy
+ */
 public class MainEncodeMail {
     private static MailBox mailbox;
     private static MailStore store;

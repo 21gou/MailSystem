@@ -7,6 +7,9 @@ import oop.User;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+/**
+ * Encode body of the messages with a given strategy
+ */
 public class EncodeMailStoreDecorator extends MailStoreDecorator {
     private EncodeStrategy cipher;
 

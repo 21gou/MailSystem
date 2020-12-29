@@ -17,6 +17,11 @@ public class MailStoreFactory {
     public static final int FILESTOREAESREVERSE = 4;
     public static final int REDISSTORE = 5;
 
+    /**
+     * Returns new mail store based on the parameter
+     * @param storeType
+     * @return
+     */
     public static MailStore createMailStore(int storeType) {
         switch(storeType) {
             case INMEMORYSTORE:
@@ -41,6 +46,12 @@ public class MailStoreFactory {
         }
     }
 
+    /**
+     * Returns new mail store based on the parameters
+     * @param storeType
+     * @param options
+     * @return
+     */
     public static MailStore createMailStore(int storeType, String options) {
         switch(storeType) {
             case FILESTORE:

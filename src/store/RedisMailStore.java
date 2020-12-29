@@ -10,15 +10,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * MailStore based on Redis K/V storage
+ */
 public class RedisMailStore implements MailStore {
     private static RedisMailStore instance;
     private Jedis conn;
 
     private RedisMailStore() {
-
         conn = new Jedis("localhost");
     }
 
+    /**
+     * Singleton applied in order to avoid multiple concurrent connections
+     * @return
+     */
     public static RedisMailStore getRedisInstance() {
         if(instance == null) {
             instance = new RedisMailStore();
