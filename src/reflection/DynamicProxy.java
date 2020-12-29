@@ -1,4 +1,4 @@
-package reflective;
+package reflection;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -22,7 +22,7 @@ public class DynamicProxy implements InvocationHandler {
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         Object invocationResult = null;
 
-        System.out.println("Someone called " + method.getName());
+        System.out.println("[*] Someone called " + method.getName());
         invocationResult = method.invoke(this.target, args);
 
         return invocationResult;

@@ -1,8 +1,7 @@
 package oop;
 
-import patterns.MailStoreFactory;
-import reflective.Config;
-import reflective.DynamicProxy;
+import reflection.Config;
+import reflection.DynamicProxy;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -163,18 +162,12 @@ public class MailSystem {
         Annotation anot = meta.getAnnotation(Config.class);
         Config conf = (Config) anot;
 
-        switch(conf.store()) {
-            case "store.FileMailStore":
-                store = MailStoreFactory.createMailStore(MailStoreFactory.FILESTORE);
-                break;
-            case "store.MemMailStore":
-                store = MailStoreFactory.createMailStore(MailStoreFactory.INMEMORYSTORE);
-                break;
-            case "store.RedisMailStore":
-                store = MailStoreFactory.createMailStore(MailStoreFactory.REDISSTORE);
-                break;
-            default:
-                System.out.println("Invalid store anotation!");
+        try {
+            Class aClass = Class.forName(((Config) anot).store());
+            // New instance alone it's deprecated
+            store = (MailStore) aClass.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         if (conf.log()) {
